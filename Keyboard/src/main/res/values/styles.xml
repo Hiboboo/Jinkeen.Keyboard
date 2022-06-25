@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="SoftInputBottomDialogStyle" parent="@style/Base.V7.Theme.AppCompat.Light.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowAnimationStyle">@style/SoftInput.BottomDialog.Animation</item>
+    </style>
+
+    <style name="SoftInput.BottomDialog.Animation" parent="Animation.AppCompat.Dialog">
+        <item name="android:windowEnterAnimation">@anim/si_tranlate_dialog_in</item>
+        <item name="android:windowExitAnimation">@anim/si_tranlate_dialog_out</item>
+    </style>
+</resources>

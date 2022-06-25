@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SoftInputEditText">
+        <!-- 键盘模式 -->
+        <attr name="si_keyboard_type" format="enum">
+            <!-- 全键盘 -->
+            <enum name="QWERTY" value="30"/>
+            <!-- 数字键盘 -->
+            <enum name="NUMBER" value="31"/>
+            <!-- 身份证键盘 -->
+            <enum name="IDCARD" value="32"/>
+        </attr>
+        <!-- 是否允许输入小数点 -->
+        <attr name="si_decimal_point" format="boolean"/>
+    </declare-styleable>
+</resources>
