@@ -1,9 +1,12 @@
 package com.jinkeen.keyboard
 
 import android.content.Context
+import android.graphics.Rect
 import android.util.AttributeSet
 import android.util.Log
+import android.view.KeyEvent
 import android.view.MotionEvent
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.annotation.NonNull
@@ -36,6 +39,17 @@ class SoftInputEditText(@NonNull context: Context, attrs: AttributeSet?, defStyl
         return super.onTextContextMenuItem(id)
     }
 
+    override fun dispatchKeyEvent(event: KeyEvent?): Boolean {
+        Log.d(TAG, "dispatchKeyEvent(event=$event)")
+        event?.let {
+            if (it.action == MotionEvent.ACTION_UP && it.keyCode == KeyEvent.KEYCODE_BACK && dialog.isShowing()) {
+                dialog.dismiss()
+                return true
+            }
+        }
+        return super.dispatchKeyEvent(event)
+    }
+
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         event ?: return super.onTouchEvent(event)
         when (event.action) {
@@ -50,16 +64,35 @@ class SoftInputEditText(@NonNull context: Context, attrs: AttributeSet?, defStyl
         return super.performClick()
     }
 
+    private var dialog = SoftInputDialog()
+
     private fun showKeyboard() {
         Log.d(TAG, "showKeyboard(Context=[${context}])")
         this.requestFocus()
         this.requestFocusFromTouch()
         hideSystemSoftKeyboard(this)
-        val dialog = SoftInputDialog().apply { setOnKeyboardActionClickListener(sKeyboardListener) }
         (context as? FragmentActivity)?.let {
+            dialog.setOnKeyboardActionClickListener(sKeyboardListener)
             dialog.show(it.supportFragmentManager)
             dialog.toggleKeyboard(sKeyboardMode, isAllowDecimalPoint)
         }
+    }
+
+    private val sIdenittyCode = System.identityHashCode(this)
+    private val sLayoutRect = Rect()
+
+    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
+        super.onLayout(changed, left, top, right, bottom)
+        sLayoutRect.setEmpty()
+        this.getGlobalVisibleRect(sLayoutRect)
+        Log.d(TAG, "onLayout(changedView=$this, left=${sLayoutRect.left}, top=${sLayoutRect.top}, right=${sLayoutRect.right}, bottom=${sLayoutRect.bottom})")
+        dialog.replaceChildViewCoordinate(sIdenittyCode, sLayoutRect)
+    }
+
+    override fun onVisibilityChanged(changedView: View, visibility: Int) {
+        super.onVisibilityChanged(changedView, visibility)
+        Log.d(TAG, "onVisibilityChanged(changedView=$changedView, visibility=$visibility)")
+        if (visibility != View.VISIBLE) dialog.removeChildViewCoordinate(sIdenittyCode)
     }
 
     private val sKeyboardListener = object : SoftInputDialog.OnKeyboardActionClickListener {

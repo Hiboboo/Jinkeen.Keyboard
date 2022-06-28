@@ -7,26 +7,53 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
         <com.jinkeen.keyboard.SoftInputEditText
+            android:id="@+id/edit_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="88dp"
+            android:minHeight="90dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="88dp"
             app:si_keyboard_type="QWERTY"
             android:hint="全键盘"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            android:background="#ccff00"/>
         <com.jinkeen.keyboard.SoftInputEditText
+            android:id="@+id/edit_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="88dp"
+            android:minHeight="90dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="60dp"
             app:si_keyboard_type="NUMBER"
-            app:si_decimal_point="false"
+            app:si_decimal_point="true"
             android:hint="数字键盘"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            android:background="#66ccff"/>
         <com.jinkeen.keyboard.SoftInputEditText
+            android:id="@+id/edit_3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="88dp"
+            android:minHeight="90dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="50dp"
             app:si_keyboard_type="IDCARD"
             android:hint="身份证键盘"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            android:background="#FFDAB9"/>
+        <Button
+            android:id="@+id/hide_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="58dp"
+            android:layout_marginTop="15dp"
+            android:text="隐藏"/>
+        <Button
+            android:id="@+id/show_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="58dp"
+            android:layout_marginTop="15dp"
+            android:text="显示"/>
     </LinearLayout>
 </layout>

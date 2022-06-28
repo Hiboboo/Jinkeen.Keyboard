@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
-    <com.jinkeen.keyboard.MultikeyboardView
-        android:id="@+id/keyboard_view"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.jinkeen.keyboard.KeyboardShadowContainerView
+        android:id="@+id/keyboard_view_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:labelTextSize="26sp"
-        android:keyTextColor="@android:color/black"
-        android:background="@android:color/white"/>
+        app:hl_shadowColor="#000000"
+        app:hl_shadowLimit="10dp"
+        app:hl_shadowHiddenLeft="true"
+        app:hl_shadowHiddenRight="true"
+        app:hl_shadowHiddenBottom="true">
+        <com.jinkeen.keyboard.MultikeyboardView
+            android:id="@+id/keyboard_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"/>
+    </com.jinkeen.keyboard.KeyboardShadowContainerView>
 </layout>

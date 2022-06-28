@@ -5,9 +5,5 @@
             <solid android:color="#ababab" />
         </shape>
     </item>
-    <item>
-        <shape android:shape="rectangle">
-            <solid android:color="#7FCCCCCC" />
-        </shape>
-    </item>
+    <item android:drawable="@drawable/ic_selector_key2_normal" />
 </selector>
