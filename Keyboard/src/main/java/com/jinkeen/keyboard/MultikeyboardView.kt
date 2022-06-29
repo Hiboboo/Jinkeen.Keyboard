@@ -21,15 +21,16 @@ internal class MultikeyboardView(context: Context, attrs: AttributeSet) : Keyboa
     private val outMetrics = context.resources.displayMetrics
 
     private val keyboardWidth by lazy { if (KeyboardStyle.KEYBOARD_WIDTH == WindowManager.LayoutParams.MATCH_PARENT) outMetrics.widthPixels else KeyboardStyle.KEYBOARD_WIDTH }
+    private val keyboardHeight by lazy { if (KeyboardStyle.KEYBOARD_HEIGHT == WindowManager.LayoutParams.MATCH_PARENT) outMetrics.heightPixels else KeyboardStyle.KEYBOARD_HEIGHT }
 
     // 数字键盘
-    private val sKeyboardNumber: Keyboard by lazy { Keyboard(context, R.xml.keyboard_number_layout, 0, keyboardWidth, outMetrics.heightPixels) }
+    private val sKeyboardNumber: Keyboard by lazy { Keyboard(context, R.xml.keyboard_number_layout, 0, keyboardWidth, keyboardHeight) }
 
     // 全键盘
-    private val sKeyboardQwerty: Keyboard by lazy { Keyboard(context, R.xml.keyboard_qwerty_layout, 0, keyboardWidth, outMetrics.heightPixels) }
+    private val sKeyboardQwerty: Keyboard by lazy { Keyboard(context, R.xml.keyboard_qwerty_layout, 0, keyboardWidth, keyboardHeight) }
 
     // 身份证键盘
-    private val sKeyboardIdcard: Keyboard by lazy { Keyboard(context, R.xml.keyboard_idcard_layout, 0, keyboardWidth, outMetrics.heightPixels) }
+    private val sKeyboardIdcard: Keyboard by lazy { Keyboard(context, R.xml.keyboard_idcard_layout, 0, keyboardWidth, keyboardHeight) }
 
     init {
         this.keyboard = sKeyboardQwerty

@@ -1,5 +1,6 @@
 package com.jinkeen.keyboard
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Rect
 import android.util.AttributeSet
@@ -50,6 +51,7 @@ class SafetyInputEditText(@NonNull context: Context, attrs: AttributeSet?, defSt
         return super.dispatchKeyEvent(event)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         event ?: return super.onTouchEvent(event)
         when (event.action) {
@@ -59,15 +61,9 @@ class SafetyInputEditText(@NonNull context: Context, attrs: AttributeSet?, defSt
         return super.onTouchEvent(event)
     }
 
-    override fun performClick(): Boolean {
-        Log.d(TAG, "performClick()")
-        return super.performClick()
-    }
-
     private var dialog = SoftInputDialog()
 
     private fun showKeyboard() {
-        Log.d(TAG, "showKeyboard(Context=[${context}])")
         this.requestFocus()
         this.requestFocusFromTouch()
         hideSystemSoftKeyboard(this)

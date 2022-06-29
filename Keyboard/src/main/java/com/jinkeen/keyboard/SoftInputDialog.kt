@@ -83,6 +83,12 @@ internal class SoftInputDialog private constructor() : DialogFragment(R.layout.s
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        Log.d(TAG, "onPause(isShowing=${isShowing()})")
+        if (isShowing()) this.dismiss()
+    }
+
     private lateinit var layoutBinding: SiDialogKeyboardLayoutBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

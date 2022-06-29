@@ -9,7 +9,7 @@
 1、在需要引入的`module`下的`build.gradle`中加入引用（必须）：
 
 ```groovy
-implementation 'com.jinkeen.base:keyboard:1.0.1'
+implementation 'com.jinkeen.base:keyboard:1.0.3'
 ```
 
 2、在`Application`的`onCreate()`方法内，配置键盘的全局基础样式（可选）：
@@ -20,6 +20,11 @@ object KeyboardStyle {
 
     /** 键盘宽度（默认横向铺满） */
     var KEYBOARD_WIDTH = WindowManager.LayoutParams.MATCH_PARENT
+    
+    /** 键盘高度（默认纵向铺满） */
+    // 这个高度的意思并非直接设置键盘的可操作范围之高度
+    // 可以理解成 为每个按键的高度等比缩放提供一个基准值，数值越低，按键的高度自适应亦越低
+    var KEYBOARD_HEIGHT = WindowManager.LayoutParams.MATCH_PARENT
 
     /** 按键的文字大小（默认15） */
     var KEY_TEXT_SIZE = 15.0f

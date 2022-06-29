@@ -11,6 +11,9 @@ object KeyboardStyle {
     /** 键盘宽度 */
     var KEYBOARD_WIDTH = WindowManager.LayoutParams.MATCH_PARENT
 
+    /** 键盘高度 */
+    var KEYBOARD_HEIGHT = WindowManager.LayoutParams.MATCH_PARENT
+
     /** 按键的文字大小 */
     var KEY_TEXT_SIZE = 15.0f
 

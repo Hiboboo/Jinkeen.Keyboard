@@ -1,5 +1,6 @@
 package com.jinkeen.cus.keyboard
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -12,6 +13,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
         binding.hideView.setOnClickListener { binding.edit2.visibility = View.GONE }
-        binding.showView.setOnClickListener { binding.edit2.visibility = View.VISIBLE }
+        binding.showView.setOnClickListener { startActivity(Intent(this, MainActivity2::class.java)) }
     }
 }
