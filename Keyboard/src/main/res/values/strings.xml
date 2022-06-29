@@ -2,6 +2,7 @@
 <resources>
     <string name="si_label_switch_uppercase">切换大写</string>
     <string name="si_label_switch_lowercase">切换小写</string>
+    <string name="si_label_clear">全部清除</string>
     <string name="si_label_space">空格</string>
     <string name="si_label_confirm">确定</string>
 </resources>

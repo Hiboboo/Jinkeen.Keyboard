@@ -10,8 +10,8 @@ class App : Application() {
         super.onCreate()
 
         KeyboardStyle.KEYBOARD_WIDTH = 1150
-        KeyboardStyle.KEY_STYLE_TEXT_SIZE = 26.0f
-        KeyboardStyle.KEY_STYLE_TEXT_COLOR = Color.BLUE
-        KeyboardStyle.KEY_STYLE_DEL_ICON = R.mipmap.common_icon_click_keyboard_delete
+        KeyboardStyle.KEY_TEXT_SIZE = 22.0f
+//        KeyboardStyle.KEY_TEXT_COLOR = Color.BLUE
+        KeyboardStyle.KEY_DEL_ICON = R.mipmap.common_icon_click_keyboard_delete
     }
 }

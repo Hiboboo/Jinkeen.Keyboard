@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <com.jinkeen.keyboard.SoftInputEditText
+        <com.jinkeen.keyboard.SafetyInputEditText
             android:id="@+id/edit_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -18,7 +18,7 @@
             android:hint="全键盘"
             android:textColor="@color/black"
             android:background="#ccff00"/>
-        <com.jinkeen.keyboard.SoftInputEditText
+        <com.jinkeen.keyboard.SafetyInputEditText
             android:id="@+id/edit_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -26,11 +26,11 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="60dp"
             app:si_keyboard_type="NUMBER"
-            app:si_decimal_point="true"
+            app:si_decimal_point="false"
             android:hint="数字键盘"
             android:textColor="@color/black"
             android:background="#66ccff"/>
-        <com.jinkeen.keyboard.SoftInputEditText
+        <com.jinkeen.keyboard.SafetyInputEditText
             android:id="@+id/edit_3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

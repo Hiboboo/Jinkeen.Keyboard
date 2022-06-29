@@ -7,8 +7,6 @@
         android:layout_height="wrap_content"
         app:hl_shadowColor="#000000"
         app:hl_shadowLimit="10dp"
-        app:hl_shadowHiddenLeft="true"
-        app:hl_shadowHiddenRight="true"
         app:hl_shadowHiddenBottom="true">
         <com.jinkeen.keyboard.MultikeyboardView
             android:id="@+id/keyboard_view"

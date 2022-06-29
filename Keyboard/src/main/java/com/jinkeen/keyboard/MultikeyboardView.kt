@@ -9,6 +9,7 @@ import android.inputmethodservice.Keyboard
 import android.inputmethodservice.KeyboardView
 import android.util.AttributeSet
 import android.util.Log
+import android.view.WindowManager
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
@@ -16,20 +17,25 @@ import androidx.core.content.ContextCompat
 @SuppressLint("ResourceType")
 internal class MultikeyboardView(context: Context, attrs: AttributeSet) : KeyboardView(context, attrs) {
 
+    // 默认屏幕分辨率
+    private val outMetrics = context.resources.displayMetrics
+
+    private val keyboardWidth by lazy { if (KeyboardStyle.KEYBOARD_WIDTH == WindowManager.LayoutParams.MATCH_PARENT) outMetrics.widthPixels else KeyboardStyle.KEYBOARD_WIDTH }
+
     // 数字键盘
-    private val sKeyboardNumber: Keyboard by lazy { Keyboard(context, R.xml.keyboard_number_layout) }
+    private val sKeyboardNumber: Keyboard by lazy { Keyboard(context, R.xml.keyboard_number_layout, 0, keyboardWidth, outMetrics.heightPixels) }
 
     // 全键盘
-    private val sKeyboardQwerty: Keyboard by lazy { Keyboard(context, R.xml.keyboard_qwerty_layout) }
+    private val sKeyboardQwerty: Keyboard by lazy { Keyboard(context, R.xml.keyboard_qwerty_layout, 0, keyboardWidth, outMetrics.heightPixels) }
 
     // 身份证键盘
-    private val sKeyboardIdcard: Keyboard by lazy { Keyboard(context, R.xml.keyboard_idcard_layout) }
+    private val sKeyboardIdcard: Keyboard by lazy { Keyboard(context, R.xml.keyboard_idcard_layout, 0, keyboardWidth, outMetrics.heightPixels) }
 
     init {
         this.keyboard = sKeyboardQwerty
         this.isEnabled = true
         this.isPreviewEnabled = false
-        this.keyboard.isShifted = true
+        this.keyboard.isShifted = false
     }
 
     enum class KeyboardMode {
@@ -51,7 +57,7 @@ internal class MultikeyboardView(context: Context, attrs: AttributeSet) : Keyboa
         when (mode) {
             KeyboardMode.KEYBOARD_MODEL_QWERTY -> {
                 keyboard = sKeyboardQwerty
-                keyboard.isShifted = true
+                keyboard.isShifted = false
             }
             KeyboardMode.KEYBOARD_MODEL_NUMBER -> {
                 keyboard = sKeyboardNumber
@@ -78,22 +84,22 @@ internal class MultikeyboardView(context: Context, attrs: AttributeSet) : Keyboa
     @Deprecated("Deprecated in Java")
     override fun onDraw(canvas: Canvas?) {
         canvas ?: return
-        Log.d("MultikeyboardView", "keyboard=$keyboard")
         keyboard?.keys?.forEach { key ->
             when (val code = key.codes[0]) {
                 KEYBOARD_CODE_DONE -> {
                     drawKeyBackground(R.drawable.bg_selector_key_done, canvas, key)
                     drawText(canvas, key)
                 }
-                KEYBOARD_CODE_SHIFT, KEYBOARD_CODE_DELETE -> {
+                KEYBOARD_CODE_SHIFT, KEYBOARD_CODE_DELETE, KEYBOARD_CODE_CLEAR -> {
                     drawKeyBackground(R.drawable.bg_selector_key_action, canvas, key)
                     drawText(canvas, key)
                     if (code == KEYBOARD_CODE_DELETE) drawIcon(canvas, key)
                 }
                 KEYBOARD_CODE_NOTHING -> drawKeyBackground(R.drawable.bg_key_no_decimal_point, canvas, key)
+                KEYBOARD_CODE_EMPTY -> drawKeyBackground(R.drawable.bg_key_placeholder_empty, canvas, key)
                 else -> {
                     if (code == 46 && !isAllowDecimalPoint) drawKeyBackground(R.drawable.bg_key_no_decimal_point, canvas, key)
-                    else if (key.edgeFlags == Keyboard.EDGE_LEFT) drawKeyBackground(R.drawable.bg_selector_key2_normal, canvas, key)
+                    else if (code == 65 || code == 97) drawKeyBackground(R.drawable.bg_selector_key2_normal, canvas, key)
                     else drawKeyBackground(R.drawable.bg_selector_key_normal, canvas, key)
                     drawText(canvas, key)
                 }
@@ -112,8 +118,8 @@ internal class MultikeyboardView(context: Context, attrs: AttributeSet) : Keyboa
     // 绘制按键label
     private fun drawText(canvas: Canvas, key: Keyboard.Key) {
         key.label ?: return
-        mPaint.color = KeyboardStyle.KEY_STYLE_TEXT_COLOR
-        mPaint.textSize = KeyboardStyle.KEY_STYLE_TEXT_SIZE
+        mPaint.color = KeyboardStyle.KEY_TEXT_COLOR
+        mPaint.textSize = KeyboardStyle.KEY_TEXT_SIZE
         canvas.drawText(
             key.label.toString(), (key.x + ((key.width - paddingLeft - paddingRight) / 2 + paddingLeft)).toFloat(),
             key.y + ((key.height - paddingTop - paddingBottom) / 2).toFloat() + (mPaint.textSize - mPaint.descent()) / 2 + paddingTop.toFloat(),
@@ -123,7 +129,7 @@ internal class MultikeyboardView(context: Context, attrs: AttributeSet) : Keyboa
 
     // 绘制按键icon
     private fun drawIcon(canvas: Canvas, key: Keyboard.Key) {
-        ContextCompat.getDrawable(context, KeyboardStyle.KEY_STYLE_DEL_ICON)?.let { drawable ->
+        ContextCompat.getDrawable(context, KeyboardStyle.KEY_DEL_ICON)?.let { drawable ->
             val intrinsicWidth = drawable.intrinsicWidth
             val intrinsicHeight = drawable.intrinsicHeight
             val drawKeyWidth = if (intrinsicWidth > key.width) key.width else intrinsicWidth

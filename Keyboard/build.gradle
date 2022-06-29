@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'maven-publish'
 }
 
 android {
@@ -30,6 +31,11 @@ android {
     buildFeatures {
         dataBinding = true
     }
+    //生成文档注释
+    task generateSourcesJar(type: Jar) {
+        from android.sourceSets.main.java.srcDirs
+        archiveClassifier.set('sources')
+    }
 }
 
 dependencies {
@@ -40,4 +46,48 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+}
+
+def getPropertyFromLocalProperties(key) {
+    File file = project.rootProject.file('local.properties')
+    if (file.exists()) {
+        Properties properties = new Properties()
+        properties.load(file.newDataInputStream())
+        return properties.getProperty(key)
+    }
+}
+
+publishing {
+    publications {
+        release(MavenPublication) {
+            groupId = "com.jinkeen.base"
+            artifactId = "keyboard"
+            version = "1.0.1"
+            afterEvaluate { artifact(tasks.getByName("bundleReleaseAar")) }
+            artifact generateSourcesJar
+            pom.withXml {
+                def dependenciesNode = asNode().appendNode('dependencies')
+                configurations.implementation.allDependencies.each {
+                    // 避免出现空节点或 artifactId=unspecified 的节点
+                    if (it.group != null && (it.name != null && "unspecified" != it.name) && it.version != null) {
+                        println it.toString()
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', it.group)
+                        dependencyNode.appendNode('artifactId', it.name)
+                        dependencyNode.appendNode('version', it.version)
+                        dependencyNode.appendNode('scope', 'api')
+                    }
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            url = "https://devrepo.devcloud.cn-east-3.huaweicloud.com/artgalaxy/cn-east-3_0c81d4c71200f2da0f19c01299498820_maven_1_0/"
+            credentials {
+                username = getPropertyFromLocalProperties("bintray.user").toString()
+                password = getPropertyFromLocalProperties("bintray.password").toString()
+            }
+        }
+    }
 }

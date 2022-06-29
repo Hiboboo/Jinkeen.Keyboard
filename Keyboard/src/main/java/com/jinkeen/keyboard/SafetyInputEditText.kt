@@ -14,7 +14,7 @@ import androidx.appcompat.widget.AppCompatEditText
 import androidx.fragment.app.FragmentActivity
 import kotlin.math.max
 
-class SoftInputEditText(@NonNull context: Context, attrs: AttributeSet?, defStyleAttr: Int) : AppCompatEditText(context, attrs, defStyleAttr) {
+class SafetyInputEditText(@NonNull context: Context, attrs: AttributeSet?, defStyleAttr: Int) : AppCompatEditText(context, attrs, defStyleAttr) {
 
     constructor(@NonNull context: Context, attrs: AttributeSet?) : this(context, attrs, android.R.attr.editTextStyle)
 
@@ -24,9 +24,9 @@ class SoftInputEditText(@NonNull context: Context, attrs: AttributeSet?, defStyl
     private val isAllowDecimalPoint: Boolean
 
     init {
-        val a = context.obtainStyledAttributes(attrs, R.styleable.SoftInputEditText)
-        sKeyboardMode = a.getInt(R.styleable.SoftInputEditText_si_keyboard_type, KEYBOARD_MODE_QWERTY)
-        isAllowDecimalPoint = a.getBoolean(R.styleable.SoftInputEditText_si_decimal_point, true)
+        val a = context.obtainStyledAttributes(attrs, R.styleable.SafetyInputEditText)
+        sKeyboardMode = a.getInt(R.styleable.SafetyInputEditText_si_keyboard_type, KEYBOARD_MODE_QWERTY)
+        isAllowDecimalPoint = a.getBoolean(R.styleable.SafetyInputEditText_si_decimal_point, true)
         a.recycle()
     }
 
@@ -109,6 +109,7 @@ class SoftInputEditText(@NonNull context: Context, attrs: AttributeSet?, defStyl
                     if (begin == end) begin = (end - 1)
                     editableText.delete(max(begin, 0), end)
                 }
+                KEYBOARD_CODE_CLEAR -> editableText.clear()
                 else -> {
                     if (primaryCode == 46 && !isAllowDecimalPoint) return
                     val begin = selectionStart
@@ -128,7 +129,7 @@ class SoftInputEditText(@NonNull context: Context, attrs: AttributeSet?, defStyl
 
     companion object {
 
-        private const val TAG = "SoftInputEditText"
+        private const val TAG = "SafetyInputEditText"
 
         fun hideSystemSoftKeyboard(editText: EditText) {
             editText.showSoftInputOnFocus = false

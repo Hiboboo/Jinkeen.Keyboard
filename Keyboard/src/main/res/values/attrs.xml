@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="SoftInputEditText">
+    <declare-styleable name="SafetyInputEditText">
         <!-- 键盘模式 -->
         <attr name="si_keyboard_type" format="enum">
             <!-- 全键盘 -->

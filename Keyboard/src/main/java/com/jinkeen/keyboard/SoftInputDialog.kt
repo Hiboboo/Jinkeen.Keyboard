@@ -78,12 +78,8 @@ internal class SoftInputDialog private constructor() : DialogFragment(R.layout.s
         super.onStart()
         dialog?.window?.let {
             it.setLayout(KeyboardStyle.KEYBOARD_WIDTH, WindowManager.LayoutParams.WRAP_CONTENT)
+            it.attributes.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
             it.setGravity(Gravity.BOTTOM)
-            val attributes = it.attributes
-            attributes.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
-            attributes.width = KeyboardStyle.KEYBOARD_WIDTH
-            attributes.height = WindowManager.LayoutParams.WRAP_CONTENT
-            it.attributes = attributes
         }
     }
 
@@ -118,6 +114,11 @@ internal class SoftInputDialog private constructor() : DialogFragment(R.layout.s
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "onViewCreated(keyboardView=${layoutBinding.keyboardView})")
+        val widthPixels = resources.displayMetrics.widthPixels
+        Log.d(TAG, "onViewCreated(widthPixels=$widthPixels)")
+        val isHideLRShadow = (KeyboardStyle.KEYBOARD_WIDTH >= widthPixels || KeyboardStyle.KEYBOARD_WIDTH == WindowManager.LayoutParams.MATCH_PARENT)
+        layoutBinding.keyboardViewContainer.setShadowHiddenLeft(isHideLRShadow)
+        layoutBinding.keyboardViewContainer.setShadowHiddenRight(isHideLRShadow)
         isViewCreated.set(true)
         layoutBinding.keyboardView.setOnKeyboardActionListener(object : KeyboardView.OnKeyboardActionListener {
             override fun onPress(primaryCode: Int) {
@@ -133,7 +134,8 @@ internal class SoftInputDialog private constructor() : DialogFragment(R.layout.s
             override fun onKey(primaryCode: Int, keyCodes: IntArray?) {
                 Log.d(TAG, "onKey(primaryCode=$primaryCode, keyCodes=$keyCodes)")
                 when (primaryCode) {
-                    KEYBOARD_CODE_DONE -> dismiss()
+                    // 透明占位键与完成键重叠
+                    KEYBOARD_CODE_DONE, KEYBOARD_CODE_EMPTY -> dismiss()
                     KEYBOARD_CODE_NOTHING -> return
                     KEYBOARD_CODE_SHIFT -> changeKey(primaryCode)
                     else -> listener?.onKey(primaryCode, keyCodes)
